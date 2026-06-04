@@ -109,3 +109,137 @@ body { background: var(--bg); color: var(--text); font-family: var(--font); font
 
 /* -- Misc -- */
 .loading { display: flex; gap: 1rem; padding: 2rem; color: var(--muted); align-items: center; }
+
+/* -- Category badges -- */
+.category-badge {
+  display: inline-flex; align-items: center; gap: .25rem;
+  padding: .15rem .55rem; border-radius: 99px;
+  font-size: .72rem; font-weight: 500; color: #fff; white-space: nowrap;
+}
+.badge-remove {
+  background: none; border: none; color: #fff; opacity: .7;
+  cursor: pointer; font-size: .95rem; padding: 0; line-height: 1;
+}
+.badge-remove:hover { opacity: 1; }
+
+/* -- Category filter row (NotesList) -- */
+.category-filter {
+  display: flex; gap: .5rem; margin-bottom: 1rem;
+  overflow-x: auto; padding-bottom: .2rem; flex-wrap: nowrap;
+}
+.filter-chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .3rem .75rem; border-radius: 99px; font-size: .8rem;
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  cursor: pointer; white-space: nowrap; transition: border-color .15s, color .15s;
+  flex-shrink: 0;
+}
+.filter-chip:hover { border-color: var(--accent); color: var(--text); }
+.filter-chip.active { border-color: var(--accent); color: var(--text); }
+.filter-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* -- Note item categories -- */
+.note-categories { display: flex; flex-wrap: wrap; gap: .3rem; margin: .25rem 0; }
+
+/* -- Category manager panel -- */
+.category-manager {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem;
+}
+.manager-header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem;
+}
+.manager-header h2 { font-size: 1rem; font-weight: 600; }
+.btn-close {
+  background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem;
+}
+.btn-close:hover { color: var(--danger); }
+.manager-empty { color: var(--muted); font-size: .875rem; margin-bottom: .75rem; }
+.manager-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin-bottom: .75rem; }
+.manager-item { display: flex; align-items: center; justify-content: space-between; }
+.manager-form { border-top: 1px solid var(--border); padding-top: .75rem; }
+
+/* -- Category picker (NoteEdit) -- */
+.category-picker { position: relative; margin-bottom: 1rem; }
+.category-picker-tags { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+.btn-add-category {
+  background: none; border: 1px dashed var(--border); color: var(--muted);
+  border-radius: 99px; padding: .15rem .55rem; cursor: pointer; font-size: .75rem;
+}
+.btn-add-category:hover { border-color: var(--accent); color: var(--accent); }
+.category-dropdown {
+  position: absolute; top: calc(100% + .4rem); left: 0; z-index: 100;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: .75rem; min-width: 220px; box-shadow: 0 8px 24px rgba(0,0,0,.35);
+}
+.dropdown-empty { color: var(--muted); font-size: .8rem; margin-bottom: .75rem; }
+.category-list { list-style: none; margin: 0 0 .75rem; }
+.category-option {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .4rem .5rem; cursor: pointer; border-radius: 6px; font-size: .875rem;
+}
+.category-option:hover { background: var(--bg); }
+.category-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.category-option-name { flex: 1; }
+.check { color: var(--accent); font-size: .875rem; }
+
+/* -- Shared category form parts -- */
+.new-category-form { border-top: 1px solid var(--border); padding-top: .6rem; }
+.color-swatches { display: flex; gap: .35rem; margin-bottom: .5rem; flex-wrap: wrap; }
+.swatch {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid transparent; cursor: pointer; padding: 0; flex-shrink: 0;
+}
+.swatch.selected { border-color: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,.4); }
+.new-category-row { display: flex; gap: .5rem; }
+.new-category-row input {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--text); padding: .4rem .6rem; font-size: .875rem;
+  outline: none;
+}
+.new-category-row input:focus { border-color: var(--accent); }
+.new-category-row button {
+  background: var(--accent); border: none; color: #fff;
+  border-radius: 6px; padding: .4rem .75rem; cursor: pointer; font-size: .875rem;
+}
+
+/* -- Rich editor -- */
+.rich-editor { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.rich-toolbar {
+  display: flex; gap: .4rem; padding: .4rem 0; margin-bottom: .5rem;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.toolbar-btn {
+  background: none; border: 1px solid transparent; color: var(--muted);
+  border-radius: 6px; width: 30px; height: 30px; cursor: pointer;
+  font-size: .9rem; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.toolbar-btn:hover { border-color: var(--border); color: var(--text); }
+.toolbar-btn.is-active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.rich-editor-content { flex: 1; overflow-y: auto; }
+
+/* Tiptap / ProseMirror content styles */
+.ProseMirror {
+  outline: none; min-height: 200px;
+  color: var(--text); font-size: 1rem; line-height: 1.7; padding: .5rem 0;
+}
+.ProseMirror p { margin: 0 0 .4rem; }
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--muted); float: left; pointer-events: none; height: 0;
+}
+.ProseMirror strong { color: var(--text); }
+.ProseMirror em { color: var(--text); }
+.ProseMirror ul[data-type="taskList"] { list-style: none; padding: 0; margin: .25rem 0; }
+.ProseMirror ul[data-type="taskList"] li {
+  display: flex; align-items: flex-start; gap: .5rem; margin-bottom: .25rem;
+}
+.ProseMirror ul[data-type="taskList"] li > label { margin-top: .2rem; cursor: pointer; }
+.ProseMirror ul[data-type="taskList"] li > label input[type="checkbox"] {
+  cursor: pointer; width: 15px; height: 15px; accent-color: var(--accent);
+}
+.ProseMirror ul[data-type="taskList"] li > div { flex: 1; }
+.ProseMirror ul[data-type="taskList"] li[data-checked="true"] > div {
+  text-decoration: line-through; color: var(--muted);
+}

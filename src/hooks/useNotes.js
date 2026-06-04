@@ -133,6 +133,7 @@ export function useNotes() {
       user_id: userId,
       title: '',
       body: '',
+      category_ids: [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }

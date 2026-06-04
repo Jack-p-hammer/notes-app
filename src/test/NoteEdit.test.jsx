@@ -6,6 +6,17 @@ import NoteEdit from '../pages/NoteEdit'
 
 const mockSaveNote = vi.fn()
 
+vi.mock('../components/RichEditor', () => ({
+  RichEditor: ({ content, onChange, placeholder }) => (
+    <textarea
+      data-testid="rich-editor"
+      value={content}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder={placeholder}
+    />
+  ),
+}))
+
 vi.mock('../hooks/useNotes', () => ({
   useNotes: vi.fn(() => ({
     notes: [

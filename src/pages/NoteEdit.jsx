@@ -1,6 +1,9 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useNotes } from '../hooks/useNotes'
+import { useCategories } from '../hooks/useCategories'
+import { RichEditor } from '../components/RichEditor'
+import { CategoryPicker } from '../components/CategoryPicker'
 
 const AUTOSAVE_MS = 800
 
@@ -17,10 +20,13 @@ const LABELS = {
 export default function NoteEdit() {
   const { id } = useParams()
   const { notes, saveNote } = useNotes()
+  const { categories, createCategory } = useCategories()
   const navigate = useNavigate()
   const note = notes.find((n) => n.id === id)
+
   const [title, setTitle] = useState(note?.title ?? '')
   const [body, setBody] = useState(note?.body ?? '')
+  const [categoryIds, setCategoryIds] = useState(note?.category_ids ?? [])
   const [saved, setSaved] = useState(true)
   const timerRef = useRef(null)
 
@@ -28,7 +34,9 @@ export default function NoteEdit() {
     if (note && saved) {
       setTitle(note.title)
       setBody(note.body)
+      setCategoryIds(note.category_ids ?? [])
     }
+  // Only sync on external updates (realtime), identified by updated_at changing
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [note?.updated_at])
 
@@ -37,11 +45,11 @@ export default function NoteEdit() {
       setSaved(false)
       clearTimeout(timerRef.current)
       timerRef.current = setTimeout(() => {
-        saveNote({ ...note, title: newTitle, body: newBody })
+        saveNote({ ...note, title: newTitle, body: newBody, category_ids: categoryIds })
         setSaved(true)
       }, AUTOSAVE_MS)
     },
-    [note, saveNote]
+    [note, saveNote, categoryIds]
   )
 
   const handleTitle = (e) => {
@@ -49,15 +57,18 @@ export default function NoteEdit() {
     scheduleAutoSave(e.target.value, body)
   }
 
-  const handleBody = (e) => {
-    setBody(e.target.value)
-    scheduleAutoSave(title, e.target.value)
+  const handleBody = (newBody) => {
+    setBody(newBody)
+    scheduleAutoSave(title, newBody)
+  }
+
+  const handleCategoryChange = (newIds) => {
+    setCategoryIds(newIds)
+    saveNote({ ...note, title, body, category_ids: newIds })
   }
 
   useEffect(() => {
-    return () => {
-      clearTimeout(timerRef.current)
-    }
+    return () => { clearTimeout(timerRef.current) }
   }, [])
 
   if (!note) {
@@ -77,6 +88,7 @@ export default function NoteEdit() {
         </button>
         <span className="save-status">{saved ? LABELS.saved : LABELS.saving}</span>
       </header>
+
       <input
         className="title-input"
         placeholder={LABELS.titlePlaceholder}
@@ -84,11 +96,18 @@ export default function NoteEdit() {
         onChange={handleTitle}
         autoFocus={!title}
       />
-      <textarea
-        className="body-input"
-        placeholder={LABELS.bodyPlaceholder}
-        value={body}
+
+      <CategoryPicker
+        categories={categories}
+        createCategory={createCategory}
+        categoryIds={categoryIds}
+        onChange={handleCategoryChange}
+      />
+
+      <RichEditor
+        content={body}
         onChange={handleBody}
+        placeholder={LABELS.bodyPlaceholder}
       />
     </div>
   )
