@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TaskList from '@tiptap/extension-task-list'
@@ -11,6 +12,10 @@ const LABELS = {
 }
 
 export function RichEditor({ content, onChange, placeholder }) {
+  // Tracks whether the last content change came from user typing in this editor.
+  // If true, we skip syncing the content prop back into the editor (would reset cursor).
+  const internalChangeRef = useRef(false)
+
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -20,9 +25,22 @@ export function RichEditor({ content, onChange, placeholder }) {
     ],
     content: content || '',
     onUpdate: ({ editor: e }) => {
+      internalChangeRef.current = true
       onChange(e.getHTML())
     },
   })
+
+  // Sync external content changes (e.g. note loaded from DB after async fetch)
+  // into the editor without triggering another onUpdate cycle.
+  useEffect(() => {
+    if (!editor) return
+    if (internalChangeRef.current) {
+      internalChangeRef.current = false
+      return
+    }
+    // false = don't emit onUpdate, so we don't loop back into onChange
+    editor.commands.setContent(content || '', false)
+  }, [content, editor])
 
   if (!editor) return null
 
