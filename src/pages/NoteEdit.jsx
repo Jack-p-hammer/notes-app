@@ -86,7 +86,9 @@ export default function NoteEdit() {
         <button className="btn-back" onClick={() => navigate('/')}>
           {LABELS.back}
         </button>
-        <span className="save-status">{saved ? LABELS.saved : LABELS.saving}</span>
+        <span className={`save-status ${saved ? 'is-saved' : 'is-saving'}`}>
+          {saved ? LABELS.saved : LABELS.saving}
+        </span>
       </header>
 
       <input

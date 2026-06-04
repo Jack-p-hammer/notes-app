@@ -125,6 +125,7 @@ export default function NotesList() {
 
       {visibleNotes.length === 0 ? (
         <div className="empty-state">
+          <span className="empty-state-icon">{activeFilter ? '\uD83D\uDD0D' : '\uD83D\uDDD2'}</span>
           <p>{activeFilter ? LABELS.emptyFiltered : LABELS.emptyState}</p>
           {!activeFilter && (
             <button onClick={handleNew}>{LABELS.emptyStateAction}</button>

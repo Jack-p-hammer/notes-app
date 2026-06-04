@@ -10,6 +10,8 @@ const LABELS = {
   checkEmailTitle: 'Check your email',
   checkEmailPrefix: 'We sent a magic link to ',
   checkEmailSuffix: '. Click it to sign in.',
+  logoIcon: '\uD83D\uDDD2',
+  sentIcon: '\u2709\uFE0F',
 }
 
 export default function Login() {
@@ -40,35 +42,41 @@ export default function Login() {
 
   if (sent) {
     return (
-      <div className="auth-card">
-        <h1>{LABELS.checkEmailTitle}</h1>
-        <p>
-          {LABELS.checkEmailPrefix}
-          <strong>{email}</strong>
-          {LABELS.checkEmailSuffix}
-        </p>
+      <div className="auth-wrapper">
+        <div className="auth-card">
+          <p className="auth-sent-icon">{LABELS.sentIcon}</p>
+          <h1>{LABELS.checkEmailTitle}</h1>
+          <p>
+            {LABELS.checkEmailPrefix}
+            <strong>{email}</strong>
+            {LABELS.checkEmailSuffix}
+          </p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="auth-card">
-      <h1>{LABELS.title}</h1>
-      <p>{LABELS.subtitle}</p>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder={LABELS.emailPlaceholder}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoFocus
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? LABELS.sendingButton : LABELS.sendButton}
-        </button>
-      </form>
-      {error && <p className="error">{error}</p>}
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <div className="auth-logo">{LABELS.logoIcon}</div>
+        <h1>{LABELS.title}</h1>
+        <p>{LABELS.subtitle}</p>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder={LABELS.emailPlaceholder}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoFocus
+          />
+          <button type="submit" disabled={loading}>
+            {loading ? LABELS.sendingButton : LABELS.sendButton}
+          </button>
+        </form>
+        {error && <p className="error">{error}</p>}
+      </div>
     </div>
   )
 }
